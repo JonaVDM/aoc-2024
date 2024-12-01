@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"time"
+
+	"github.com/jonavdm/aoc-2024/day01"
 )
 
 type Runner struct {
@@ -18,7 +20,9 @@ func main() {
 	onlyTime := flag.Bool("time", false, "Show only the time to completion")
 	flag.Parse()
 
-	runners := []Runner{}
+	runners := []Runner{
+		{1, day01.Run, "day01"},
+	}
 
 	printHeader(*onlyTime)
 
