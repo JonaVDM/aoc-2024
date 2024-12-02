@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/jonavdm/aoc-2024/day01"
+	"github.com/jonavdm/aoc-2024/day02"
 )
 
 type Runner struct {
@@ -22,6 +23,7 @@ func main() {
 
 	runners := []Runner{
 		{1, day01.Run, "day01"},
+		{2, day02.Run, "day02"},
 	}
 
 	printHeader(*onlyTime)
