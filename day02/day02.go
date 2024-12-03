@@ -1,7 +1,7 @@
 package day02
 
 import (
-	"fmt"
+	"log/slog"
 
 	"github.com/jonavdm/aoc-2024/utils"
 )
@@ -11,61 +11,58 @@ func Run(file string) [2]interface{} {
 
 	return [2]interface{}{
 		PartOne(data),
-		0,
+		PartTwo(data),
 	}
 }
 
 func PartOne(data [][]int) int {
-	var bad int
+	var safe int
 	for _, report := range data {
-		up := report[0] < report[len(report)-1]
-
-		for i := range report {
-			if i == 0 {
-				continue
-			}
-
-			diff := report[i-1] - report[i]
-			if utils.AbsInt(diff) > 3 || diff == 0 || (up && diff > 0) || (!up && diff < 0) {
-				bad++
-				break
-			}
+		if ValidLine(report) {
+			safe++
 		}
 	}
 
-	return len(data) - bad
+	return safe
 }
 
 func PartTwo(data [][]int) int {
-	var bad int
-	for row, report := range data {
-		first := true
-		skip := false
-		up := report[0] < report[len(report)-1]
+	var safe int
+	for _, report := range data {
+		if ValidLine(report) {
+			safe++
+			continue
+		}
 
+		slog.Debug("", "", report)
 		for i := range report {
-			if i == 0 {
-				continue
-			}
+			copySlice := make([]int, len(report))
+			copy(copySlice, report)
+			newSlice := append(copySlice[:i], copySlice[i+1:]...)
 
-			diff := report[i-1] - report[i]
-			if skip {
-				diff = report[i-2] - report[i]
-				skip = false
-			}
-
-			if utils.AbsInt(diff) > 3 || diff == 0 || (up && diff > 0) || (!up && diff < 0) {
-				if first {
-					first = false
-					skip = true
-					continue
-				}
-				bad++
-				fmt.Println(row, false)
+			if ValidLine(newSlice) {
+				safe++
 				break
 			}
 		}
 	}
 
-	return len(data) - bad
+	return safe
+}
+
+func ValidLine(line []int) bool {
+	up := line[0] < line[len(line)-1]
+	for i := range line {
+		if i == 0 {
+			continue
+		}
+
+		diff := line[i-1] - line[i]
+
+		if utils.AbsInt(diff) > 3 || diff == 0 || (up && diff > 0) || (!up && diff < 0) {
+			return false
+		}
+	}
+
+	return true
 }
