@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/jonavdm/aoc-2024/day01"
@@ -20,7 +21,12 @@ func main() {
 	onlyDay := flag.Int("day", -1, "Specify the day")
 	replacedInput := flag.String("file", "", "Run with a different input")
 	onlyTime := flag.Bool("time", false, "Show only the time to completion")
+	debug := flag.Bool("debug", false, "Show debug messages")
 	flag.Parse()
+
+	if *debug {
+		slog.SetLogLoggerLevel(slog.LevelDebug)
+	}
 
 	runners := []Runner{
 		{1, day01.Run, "day01"},
@@ -48,7 +54,7 @@ func main() {
 			out = runner.Function(runner.File)
 		}
 
-		duration := time.Now().Sub(start)
+		duration := time.Since(start)
 		totalDuration += duration
 
 		if out[0] != nil {
