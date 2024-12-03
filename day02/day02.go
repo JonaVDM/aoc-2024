@@ -11,7 +11,7 @@ func Run(file string) [2]interface{} {
 
 	return [2]interface{}{
 		PartOne(data),
-		PartTwo(data),
+		0,
 	}
 }
 

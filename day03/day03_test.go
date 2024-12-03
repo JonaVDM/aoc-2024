@@ -1,19 +1,19 @@
-package day02_test
+package day03_test
 
 import (
 	"testing"
 
-	"github.com/jonavdm/aoc-2024/day02"
+	"github.com/jonavdm/aoc-2024/day03"
 	_ "github.com/jonavdm/aoc-2024/testing"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{686, 0}, day02.Run("day02"))
+	assert.Equal(t, [2]interface{}{196826776, 106780429}, day03.Run("day03"))
 }
 
 func BenchmarkRun(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		day02.Run("day02")
+		day03.Run("day03")
 	}
 }
