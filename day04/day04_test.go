@@ -51,32 +51,3 @@ func TestFindMasses(t *testing.T) {
 		})
 	}
 }
-
-func TestFindXmas(t *testing.T) {
-	testCases := []struct {
-		name  string
-		input []string
-		x     int
-		y     int
-		out   int
-	}{
-		{
-			name:  "single row horizontal",
-			input: []string{"AAAAXMASAA"},
-			x:     4,
-			y:     0,
-			out:   2,
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			solver := day04.Solver{
-				Data: tc.input,
-			}
-			out := solver.FindM(tc.x, tc.y)
-
-			assert.Equal(t, 1, out)
-		})
-	}
-}

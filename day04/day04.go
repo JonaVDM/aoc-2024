@@ -1,8 +1,6 @@
 package day04
 
 import (
-	"log/slog"
-
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
@@ -15,54 +13,29 @@ func Run(file string) [2]interface{} {
 		Data: utils.ReadFile(file),
 	}
 
-	var count int
-	for i, row := range solver.Data {
-		for j, l := range row {
-			if l == 'X' {
-				count += solver.FindM(j, i)
-			}
-		}
-	}
-
 	return [2]interface{}{
-		count,
+		solver.FindXMas(),
 		solver.FindMasses(),
 	}
 }
 
-func (s *Solver) FindM(x, y int) int {
-	count := 0
-	for i := y - 1; i <= y+1; i++ {
-		for j := x - 1; j <= x+1; j++ {
-			if i < 0 || i >= len(s.Data) || j < 0 || j >= len(s.Data[i]) {
+func (s *Solver) FindXMas() int {
+	var count int
+	for i, row := range s.Data {
+		for j, char := range row {
+			if char != 'X' {
 				continue
 			}
 
-			if s.Data[i][j] == 'M' {
-				slog.Debug("XM")
-				if s.FindAS(j, i, -(x - j), -(y - i)) {
+			for _, p := range utils.GetRelativeAdjecend() {
+				if s.CharsInRow(j, i, p, "MAS") {
 					count++
 				}
 			}
 		}
 	}
+
 	return count
-}
-
-func (s *Solver) FindAS(x, y int, xd, yd int) bool {
-	if y+yd*2 < 0 || y+yd*2 >= len(s.Data) || x+xd*2 < 0 || x+xd*2 >= len(s.Data[0]) {
-		return false
-	}
-
-	if s.Data[y+yd][x+xd] != 'A' {
-		return false
-	}
-
-	if s.Data[y+yd*2][x+xd*2] != 'S' {
-		return false
-	}
-
-	return true
 }
 
 func (s *Solver) FindMasses() int {
@@ -78,35 +51,20 @@ func (s *Solver) FindMasses() int {
 				continue
 			}
 
-			if s.CharAt(j+1, i+1, 'A') && s.CharAt(j+2, i+2, 'S') {
-				if aMap[i+1][j+1] {
-					aCount++
-				} else {
-					aMap[i+1][j+1] = true
-				}
+			points := []utils.Point{
+				{X: +1, Y: +1},
+				{X: +1, Y: -1},
+				{X: -1, Y: +1},
+				{X: -1, Y: -1},
 			}
 
-			if s.CharAt(j+1, i-1, 'A') && s.CharAt(j+2, i-2, 'S') {
-				if aMap[i-1][j+1] {
-					aCount++
-				} else {
-					aMap[i-1][j+1] = true
-				}
-			}
-
-			if s.CharAt(j-1, i+1, 'A') && s.CharAt(j-2, i+2, 'S') {
-				if aMap[i+1][j-1] {
-					aCount++
-				} else {
-					aMap[i+1][j-1] = true
-				}
-			}
-
-			if s.CharAt(j-1, i-1, 'A') && s.CharAt(j-2, i-2, 'S') {
-				if aMap[i-1][j-1] {
-					aCount++
-				} else {
-					aMap[i-1][j-1] = true
+			for _, p := range points {
+				if s.CharsInRow(j, i, p, "AS") {
+					if aMap[i+p.Y][j+p.X] {
+						aCount++
+					} else {
+						aMap[i+p.Y][j+p.X] = true
+					}
 				}
 			}
 		}
@@ -121,4 +79,14 @@ func (s *Solver) CharAt(x, y int, char rune) bool {
 	}
 
 	return s.Data[y][x] == byte(char)
+}
+
+func (s *Solver) CharsInRow(x, y int, direction utils.Point, letters string) bool {
+	for i, l := range letters {
+		if !s.CharAt(x+direction.X*(i+1), y+direction.Y*(i+1), l) {
+			return false
+		}
+	}
+
+	return true
 }

@@ -21,3 +21,18 @@ func GetAdjacend(x, y, height, width int) []Point {
 
 	return next
 }
+
+// GetRelativeAdjecend returns a list of all the adjecend sides from -1 to 1.
+// Yes this is a hardcoded list.
+func GetRelativeAdjecend() []Point {
+	return []Point{
+		{X: -1, Y: -1},
+		{X: 0, Y: -1},
+		{X: 1, Y: -1},
+		{X: -1, Y: 0},
+		{X: 1, Y: 0},
+		{X: -1, Y: 1},
+		{X: 0, Y: 1},
+		{X: 1, Y: 1},
+	}
+}
