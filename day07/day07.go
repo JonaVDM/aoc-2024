@@ -1,7 +1,7 @@
 package day07
 
 import (
-	"slices"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -11,17 +11,18 @@ import (
 func Run(file string) [2]interface{} {
 	data := utils.ReadFile(file)
 
-	valid := 0
+	a := 0
+	b := 0
 
 	for _, row := range data {
 		search, nums := Parse(row)
-		slices.Reverse(nums)
-		valid += Sovleble(search, nums)
+		a += Sovleble(search, nums, false)
+		b += Sovleble(search, nums, true)
 	}
 
 	return [2]interface{}{
-		valid,
-		0,
+		a,
+		b,
 	}
 }
 
@@ -37,25 +38,40 @@ func Parse(row string) (int, []int) {
 	return nums[0], nums[1:]
 }
 
-func Sovleble(search int, nums []int) int {
-	solves := Solve(nums)
-	for _, solve := range solves {
-		if solve == search {
+type Row struct {
+	N   int
+	Rem []int
+}
+
+func Sovleble(search int, nums []int, two bool) int {
+	q := make([]Row, 1)
+	q[0] = Row{N: nums[0], Rem: nums[1:]}
+
+	for len(q) > 0 {
+		i := q[0]
+		q = q[1:]
+
+		n1 := i.N + i.Rem[0]
+		n2 := i.N * i.Rem[0]
+		n3, _ := strconv.Atoi(fmt.Sprintf("%d%d", i.N, i.Rem[0]))
+
+		if len(i.Rem) > 1 {
+			q = append(
+				q,
+				Row{N: n1, Rem: i.Rem[1:]},
+				Row{N: n2, Rem: i.Rem[1:]},
+			)
+
+			if two {
+				q = append(q, Row{N: n3, Rem: i.Rem[1:]})
+			}
+			continue
+		}
+
+		if n1 == search || n2 == search || (two && n3 == search) {
 			return search
 		}
 	}
+
 	return 0
-}
-
-func Solve(nums []int) []int {
-	if len(nums) == 1 {
-		return []int{nums[0]}
-	}
-
-	out := make([]int, 0)
-	for _, num := range Solve(nums[1:]) {
-		out = append(out, nums[0]+num, nums[0]*num)
-	}
-
-	return out
 }
