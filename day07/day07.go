@@ -1,7 +1,6 @@
 package day07
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -53,7 +52,9 @@ func Sovleble(search int, nums []int, two bool) int {
 
 		n1 := i.N + i.Rem[0]
 		n2 := i.N * i.Rem[0]
-		n3, _ := strconv.Atoi(fmt.Sprintf("%d%d", i.N, i.Rem[0]))
+
+		m := utils.PowInt(10, utils.NumberLength(i.Rem[0]))
+		n3 := i.N*m + i.Rem[0]
 
 		if len(i.Rem) > 1 {
 			q = append(
