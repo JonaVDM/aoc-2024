@@ -48,6 +48,8 @@ OUTER:
 		}
 	}
 
+	close(cc)
+
 	return [2]interface{}{
 		a,
 		b,
@@ -86,13 +88,21 @@ func Sovleble(search int, nums []int, two bool) int {
 		n3 := i.N*m + i.Rem[0]
 
 		if len(i.Rem) > 1 {
-			q = append(
-				q,
-				Row{N: n1, Rem: i.Rem[1:]},
-				Row{N: n2, Rem: i.Rem[1:]},
-			)
+			if n1 <= search {
+				q = append(
+					q,
+					Row{N: n1, Rem: i.Rem[1:]},
+				)
+			}
 
-			if two {
+			if n2 <= search {
+				q = append(
+					q,
+					Row{N: n2, Rem: i.Rem[1:]},
+				)
+			}
+
+			if two && n3 < search {
 				q = append(q, Row{N: n3, Rem: i.Rem[1:]})
 			}
 			continue
