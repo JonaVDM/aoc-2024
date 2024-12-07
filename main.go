@@ -94,9 +94,9 @@ func printHeader(onlyTime bool) {
 
 func printRow(day int, out [2]interface{}, duration time.Duration, onlyTime bool) {
 	if !onlyTime {
-		fmt.Printf(" ┃ %2d  │ %-16v │ %-16v │ %-11v ┃\n", day, out[0], out[1], duration)
+		fmt.Printf(" ┃ %2d  │ %-16v │ %-16v │ %-11v ┃\n", day, out[0], out[1], duration.Round(time.Microsecond))
 	} else {
-		fmt.Printf(" ┃ %2d    │ %-18v ┃\n", day, duration)
+		fmt.Printf(" ┃ %2d    │ %-18v ┃\n", day, duration.Round(time.Microsecond))
 	}
 }
 

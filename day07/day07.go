@@ -3,6 +3,7 @@ package day07
 import (
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/jonavdm/aoc-2024/utils"
 )
@@ -13,10 +14,38 @@ func Run(file string) [2]interface{} {
 	a := 0
 	b := 0
 
+	ac := make(chan int)
+	bc := make(chan int)
+	cc := make(chan int)
+
+	var wg sync.WaitGroup
+
 	for _, row := range data {
-		search, nums := Parse(row)
-		a += Sovleble(search, nums, false)
-		b += Sovleble(search, nums, true)
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			search, nums := Parse(row)
+			ac <- Sovleble(search, nums, false)
+			bc <- Sovleble(search, nums, true)
+		}()
+	}
+	go func() {
+		wg.Wait()
+		close(ac)
+		close(bc)
+		cc <- 1
+	}()
+
+OUTER:
+	for {
+		select {
+		case an := <-ac:
+			a += an
+		case bn := <-bc:
+			b += bn
+		case <-cc:
+			break OUTER
+		}
 	}
 
 	return [2]interface{}{
