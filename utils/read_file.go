@@ -1,14 +1,14 @@
 package utils
 
 import (
-	"fmt"
-	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jonavdm/aoc-2024/inputs"
 )
 
 func ReadFile(file string) []string {
-	f, err := os.ReadFile(fmt.Sprintf("inputs/%s", file))
+	f, err := inputs.Inputs.ReadFile(file)
 	if err != nil {
 		panic("could not read input file")
 	}
@@ -20,7 +20,7 @@ func ReadFile(file string) []string {
 }
 
 func ReadSingleLineFile(file string) string {
-	f, err := os.ReadFile(fmt.Sprintf("inputs/%s", file))
+	f, err := inputs.Inputs.ReadFile(file)
 	if err != nil {
 		panic("could not read input file")
 	}
@@ -32,7 +32,7 @@ func ReadSingleLineFile(file string) string {
 }
 
 func ReadFileRaw(file string) []string {
-	f, err := os.ReadFile(fmt.Sprintf("inputs/%s", file))
+	f, err := inputs.Inputs.ReadFile(file)
 	if err != nil {
 		panic("could not read input file")
 	}
@@ -46,7 +46,7 @@ func ReadFileRaw(file string) []string {
 // grid. The input is split on spaces, any additional empty values are skipped.
 // A panic is triggered when a input could not be converted to numbers.
 func ReadGridFileNum(file string) [][]int {
-	f, err := os.ReadFile(fmt.Sprintf("inputs/%s", file))
+	f, err := inputs.Inputs.ReadFile(file)
 	if err != nil {
 		panic("could not read input file")
 	}
