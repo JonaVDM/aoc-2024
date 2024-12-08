@@ -50,3 +50,7 @@ func CopyMap(m map[string]interface{}) map[string]interface{} {
 
 	return cp
 }
+
+func InRange(x, y, w, h int) bool {
+	return x >= 0 && x < w && y >= 0 && y < h
+}
