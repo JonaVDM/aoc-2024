@@ -22,6 +22,28 @@ func GetAdjacend(x, y, height, width int) []Point {
 	return next
 }
 
+// GetAdjacend returns the coordinates of all the connected squares.
+// This includes the squares diagonal from it.
+func GetDirectAdjacend(x, y, height, width int) []Point {
+	next := make([]Point, 0)
+
+	pos := make([]Point, 4)
+	pos[0] = Point{x - 1, y}
+	pos[1] = Point{x, y - 1}
+	pos[2] = Point{x + 1, y}
+	pos[3] = Point{x, y + 1}
+
+	for _, p := range pos {
+		if p.X < 0 || p.Y < 0 || p.X >= width || p.Y >= height {
+			continue
+		}
+
+		next = append(next, p)
+	}
+
+	return next
+}
+
 // GetRelativeAdjecend returns a list of all the adjecend sides from -1 to 1.
 // Yes this is a hardcoded list.
 func GetRelativeAdjecend() []Point {
