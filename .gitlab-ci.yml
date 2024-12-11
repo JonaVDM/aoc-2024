@@ -1,0 +1,5 @@
+test_go:
+  stage: test
+  image: golang:1.23.4-alpine
+  script:
+    - go test ./...
