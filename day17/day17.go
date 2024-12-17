@@ -83,7 +83,7 @@ func (m *Machine) Simulate() string {
 		case 6:
 			m.B = m.A / utils.PowInt(2, m.Val(i+1))
 		case 7:
-			m.B = m.A / utils.PowInt(2, m.Val(i+1))
+			m.C = m.A / utils.PowInt(2, m.Val(i+1))
 		}
 
 		i += 2

@@ -122,7 +122,7 @@ func TestMachine_Simulate(t *testing.T) {
 			outStr: "",
 		},
 		{
-			name: "instruction 0",
+			name: "Opcode 0",
 			in: day17.Machine{
 				A:    12,
 				B:    0,
@@ -138,18 +138,132 @@ func TestMachine_Simulate(t *testing.T) {
 			outStr: "",
 		},
 		{
-			name: "instruction 1",
+			name: "Opcode 1",
+			in: day17.Machine{
+				A:    0,
+				B:    12,
+				C:    0,
+				Inst: []int{1, 5},
+			},
+			out: day17.Machine{
+				A:    0,
+				B:    9,
+				C:    0,
+				Inst: []int{1, 5},
+			},
+			outStr: "",
+		},
+		{
+			name: "Opcode 2",
 			in: day17.Machine{
 				A:    12,
 				B:    0,
 				C:    0,
-				Inst: []int{1, 4},
+				Inst: []int{2, 4},
 			},
 			out: day17.Machine{
 				A:    12,
 				B:    4,
 				C:    0,
-				Inst: []int{1, 4},
+				Inst: []int{2, 4},
+			},
+			outStr: "",
+		},
+		{
+			// Note that this instruction assumes that opcode 5 works
+			name: "Opcode 3 (zero value)",
+			in: day17.Machine{
+				A:    0,
+				B:    0,
+				C:    0,
+				Inst: []int{3, 5, 5, 1},
+			},
+			out: day17.Machine{
+				A:    0,
+				B:    0,
+				C:    0,
+				Inst: []int{3, 5, 5, 1},
+			},
+			outStr: "1",
+		},
+		{
+			// Note that this instruction assumes that opcode 5 works
+			name: "Opcode 3 (non-zero value)",
+			in: day17.Machine{
+				A:    1,
+				B:    0,
+				C:    0,
+				Inst: []int{3, 5, 5, 1},
+			},
+			out: day17.Machine{
+				A:    1,
+				B:    0,
+				C:    0,
+				Inst: []int{3, 5, 5, 1},
+			},
+			outStr: "",
+		},
+		{
+			name: "Opcode 4",
+			in: day17.Machine{
+				A:    0,
+				B:    12,
+				C:    5,
+				Inst: []int{4, 123},
+			},
+			out: day17.Machine{
+				A:    0,
+				B:    9,
+				C:    5,
+				Inst: []int{4, 123},
+			},
+			outStr: "",
+		},
+		{
+			name: "Opcode 5",
+			in: day17.Machine{
+				A:    12,
+				B:    0,
+				C:    0,
+				Inst: []int{5, 1, 5, 4},
+			},
+			out: day17.Machine{
+				A:    12,
+				B:    0,
+				C:    0,
+				Inst: []int{5, 1, 5, 4},
+			},
+			outStr: "1,4",
+		},
+		{
+			name: "Opcode 6",
+			in: day17.Machine{
+				A:    12,
+				B:    0,
+				C:    0,
+				Inst: []int{6, 2},
+			},
+			out: day17.Machine{
+				A:    12,
+				B:    3,
+				C:    0,
+				Inst: []int{6, 2},
+			},
+			outStr: "",
+		},
+		{
+			name: "Opcode 7",
+			in: day17.Machine{
+				A:    12,
+				B:    0,
+				C:    0,
+				Inst: []int{7, 2},
+			},
+			out: day17.Machine{
+				A:    12,
+				B:    0,
+				C:    3,
+				Inst: []int{7, 2},
 			},
 			outStr: "",
 		},
