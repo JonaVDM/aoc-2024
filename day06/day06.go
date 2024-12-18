@@ -4,66 +4,7 @@ import (
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
-type Solver struct {
-	InitialPosition utils.Point
-	Pos             utils.Point
-	Dir             utils.Point
-
-	Height, Width int
-
-	Field  map[int]map[int]bool
-	Been   map[int]map[int]bool
-	Count  int
-	Enable bool
-}
-
-func (s *Solver) Move() bool {
-	if row, ok := s.Field[s.Pos.X+s.Dir.X]; ok && row[s.Pos.Y+s.Dir.Y] {
-		s.Rotate()
-	}
-
-	x := s.Pos.X + s.Dir.X
-	y := s.Pos.Y + s.Dir.Y
-
-	if x < 0 || x >= s.Width || y < 0 || y >= s.Height {
-		return false
-	}
-
-	if _, ok := s.Been[x]; s.Enable && (!ok || !s.Been[x][y]) {
-		s.Count++
-		if !ok {
-			s.Been[x] = make(map[int]bool)
-		}
-		s.Been[x][y] = true
-	}
-
-	s.Pos.X = x
-	s.Pos.Y = y
-
-	return true
-}
-
-func (s *Solver) Rotate() {
-	if s.Dir.Y == -1 {
-		s.Dir.X = 1
-		s.Dir.Y = 0
-	} else if s.Dir.X == 1 {
-		s.Dir.X = 0
-		s.Dir.Y = 1
-	} else if s.Dir.Y == 1 {
-		s.Dir.X = -1
-		s.Dir.Y = 0
-	} else if s.Dir.X == -1 {
-		s.Dir.X = 0
-		s.Dir.Y = -1
-	} else {
-		panic("inpossible direction")
-	}
-}
-
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	s1 := Solver{
 		Dir:    utils.Point{X: 0, Y: -1},
 		Field:  make(map[int]map[int]bool),
@@ -128,5 +69,62 @@ func Run(file string) [2]interface{} {
 	return [2]interface{}{
 		s1.Count,
 		0,
+	}
+}
+
+type Solver struct {
+	InitialPosition utils.Point
+	Pos             utils.Point
+	Dir             utils.Point
+
+	Height, Width int
+
+	Field  map[int]map[int]bool
+	Been   map[int]map[int]bool
+	Count  int
+	Enable bool
+}
+
+func (s *Solver) Move() bool {
+	if row, ok := s.Field[s.Pos.X+s.Dir.X]; ok && row[s.Pos.Y+s.Dir.Y] {
+		s.Rotate()
+	}
+
+	x := s.Pos.X + s.Dir.X
+	y := s.Pos.Y + s.Dir.Y
+
+	if x < 0 || x >= s.Width || y < 0 || y >= s.Height {
+		return false
+	}
+
+	if _, ok := s.Been[x]; s.Enable && (!ok || !s.Been[x][y]) {
+		s.Count++
+		if !ok {
+			s.Been[x] = make(map[int]bool)
+		}
+		s.Been[x][y] = true
+	}
+
+	s.Pos.X = x
+	s.Pos.Y = y
+
+	return true
+}
+
+func (s *Solver) Rotate() {
+	if s.Dir.Y == -1 {
+		s.Dir.X = 1
+		s.Dir.Y = 0
+	} else if s.Dir.X == 1 {
+		s.Dir.X = 0
+		s.Dir.Y = 1
+	} else if s.Dir.Y == 1 {
+		s.Dir.X = -1
+		s.Dir.Y = 0
+	} else if s.Dir.X == -1 {
+		s.Dir.X = 0
+		s.Dir.Y = -1
+	} else {
+		panic("inpossible direction")
 	}
 }

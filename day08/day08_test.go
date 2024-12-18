@@ -1,6 +1,7 @@
 package day08_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/jonavdm/aoc-2024/day08"
@@ -9,12 +10,17 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{413, 1417}, day08.Run("day08"))
+	var test []string = strings.Split(`............
+........0...
+.....0......
+.......0....
+....0.......
+......A.....
+............
+............
+........A...
+.........A..
+............
+............`, "\n")
+	assert.Equal(t, [2]interface{}{14, 34}, day08.Run(test))
 }
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day08.Run("day08")
-	}
-}
-

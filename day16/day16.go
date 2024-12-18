@@ -13,9 +13,7 @@ const (
 	WEST
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	s := parse(data)
 
 	return [2]interface{}{

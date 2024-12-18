@@ -1,14 +1,8 @@
 package day09
 
-import (
-	"github.com/jonavdm/aoc-2024/utils"
-)
-
-func Run(file string) [2]interface{} {
-	data := utils.ReadSingleLineFile(file)
-
-	nums := make([]int, len(data))
-	for i, l := range data {
+func Run(data []string) [2]interface{} {
+	nums := make([]int, len(data[0]))
+	for i, l := range data[0] {
 		nums[i] = int(l - '0')
 	}
 

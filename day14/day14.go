@@ -11,9 +11,7 @@ import (
 const HEIGHT int = 103
 const WIDTH int = 101
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	corner := make([]int, 4)
 	f := make(Field, len(data))
 

@@ -6,12 +6,12 @@ import (
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadGridFileNum(file)
+func Run(data []string) [2]interface{} {
+	grid := utils.ConverToGridInts(data, " ")
 
 	return [2]interface{}{
-		PartOne(data),
-		PartTwo(data),
+		PartOne(grid),
+		PartTwo(grid),
 	}
 }
 

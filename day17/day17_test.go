@@ -8,16 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// func TestRun(t *testing.T) {
-// 	assert.Equal(t, [2]interface{}{0, 0}, day17.Run("day17"))
-// }
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day17.Run("day17")
-	}
-}
-
 func TestMachine_Simulate(t *testing.T) {
 	testCases := []struct {
 		name         string

@@ -1,6 +1,9 @@
 package utils
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+)
 
 func ConvertToInts(input []string) []int {
 	out := make([]int, len(input))
@@ -16,16 +19,16 @@ func ConvertToInts(input []string) []int {
 	return out
 }
 
-func ConverToGridInts(input []string) [][]int {
+func ConverToGridInts(input []string, seperator string) [][]int {
 	out := make([][]int, len(input))
 	for r, row := range input {
-		val := make([]int, len(row))
-		for i, c := range row {
+		val := make([]int, 0)
+		for _, c := range strings.Split(row, seperator) {
 			con, err := strconv.Atoi(string(c))
 			if err != nil {
 				panic(err)
 			}
-			val[i] = con
+			val = append(val, con)
 		}
 		out[r] = val
 	}

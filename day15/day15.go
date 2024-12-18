@@ -6,9 +6,7 @@ import (
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	room := Parse(data)
 	room.do()
 

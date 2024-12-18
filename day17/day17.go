@@ -8,9 +8,7 @@ import (
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	a, _ := strconv.Atoi(strings.Split(data[0], " ")[2])
 	b, _ := strconv.Atoi(strings.Split(data[1], " ")[2])
 	c, _ := strconv.Atoi(strings.Split(data[2], " ")[2])

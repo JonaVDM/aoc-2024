@@ -4,13 +4,9 @@ import (
 	"log/slog"
 	"regexp"
 	"strconv"
-
-	"github.com/jonavdm/aoc-2024/utils"
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	totalA := 0
 	totalB := 0
 	enabled := true

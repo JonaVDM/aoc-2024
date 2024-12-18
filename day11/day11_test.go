@@ -9,11 +9,6 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{184927, 220357186726677}, day11.Run("day11"))
-}
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day11.Run("day11")
-	}
+	file := []string{"125 17"}
+	assert.Equal(t, [2]interface{}{55312, 65601038650482}, day11.Run(file))
 }

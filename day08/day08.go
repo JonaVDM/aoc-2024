@@ -11,9 +11,7 @@ type Solver struct {
 	Height, Width int
 }
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	s := Solver{
 		Points: make(map[rune][]utils.Point),
 		Height: len(data),

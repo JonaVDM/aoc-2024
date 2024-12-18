@@ -24,11 +24,12 @@ import (
 	"github.com/jonavdm/aoc-2024/day16"
 	"github.com/jonavdm/aoc-2024/day17"
 	"github.com/jonavdm/aoc-2024/day18"
+	"github.com/jonavdm/aoc-2024/utils"
 )
 
 type Runner struct {
 	Day      int
-	Function func(string) [2]interface{}
+	Function func([]string) [2]interface{}
 	File     string
 }
 
@@ -71,18 +72,18 @@ func main() {
 	for _, runner := range runners {
 		start := time.Now()
 		var out [2]interface{}
+		file := runner.File
 
-		if *onlyDay > 0 && runner.Day == *onlyDay {
-			file := runner.File
-			if *replacedInput != "" {
-				file = *replacedInput
-			}
-			out = runner.Function(file)
+		if *onlyDay > 0 && runner.Day != *onlyDay {
+			continue
 		}
 
-		if *onlyDay == -1 {
-			out = runner.Function(runner.File)
+		if *onlyDay > 0 && *replacedInput != "" {
+			file = *replacedInput
 		}
+
+		data := utils.ReadFile(file)
+		out = runner.Function(data)
 
 		duration := time.Since(start)
 		totalDuration += duration

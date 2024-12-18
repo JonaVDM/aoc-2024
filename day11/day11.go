@@ -8,11 +8,9 @@ import (
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadSingleLineFile(file)
-
+func Run(data []string) [2]interface{} {
 	nums := make([]int, 0)
-	for _, c := range strings.Split(data, " ") {
+	for _, c := range strings.Split(data[0], " ") {
 		n, _ := strconv.Atoi(c)
 		nums = append(nums, n)
 	}

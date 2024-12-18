@@ -1,6 +1,7 @@
 package day16_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/jonavdm/aoc-2024/day16"
@@ -9,12 +10,20 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{106512, 0}, day16.Run("day16"))
+	file := strings.Split(`###############
+#.......#....E#
+#.#.###.#.###.#
+#.....#.#...#.#
+#.###.#####.#.#
+#.#.#.......#.#
+#.#.#####.###.#
+#...........#.#
+###.#.#####.#.#
+#...#.....#.#.#
+#.#.#.###.#.#.#
+#.....#...#.#.#
+#.###.#.#.#.#.#
+#S..#.....#...#
+###############`, "\n")
+	assert.Equal(t, [2]interface{}{7036, 0}, day16.Run(file))
 }
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day16.Run("day16")
-	}
-}
-

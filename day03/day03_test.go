@@ -9,11 +9,8 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{196826776, 106780429}, day03.Run("day03"))
-}
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day03.Run("day03")
+	data := []string{
+		"xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))",
 	}
+	assert.Equal(t, [2]interface{}{161, 48}, day03.Run(data))
 }

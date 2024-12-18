@@ -9,13 +9,19 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{2504, 1923}, day04.Run("day04"))
-}
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day04.Run("day04")
+	test := []string{
+		"MMMSXXMASM",
+		"MSAMXMSMSA",
+		"AMXSXMAAMM",
+		"MSAMASMSMX",
+		"XMASAMXAMM",
+		"XXAMMXXAMA",
+		"SMSMSASXSS",
+		"SAXAMASAAA",
+		"MAMMMXMMMM",
+		"MXMXAXMASX",
 	}
+	assert.Equal(t, [2]interface{}{18, 9}, day04.Run(test))
 }
 
 func TestFindMasses(t *testing.T) {

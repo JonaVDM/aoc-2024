@@ -11,9 +11,7 @@ import (
 
 const SIZE int = 70
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
+func Run(data []string) [2]interface{} {
 	r := Parse(data, 1024)
 
 	return [2]interface{}{

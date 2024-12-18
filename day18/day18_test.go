@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var Example []string = []string{
+var Day18Example []string = []string{
 	"5,4",
 	"4,2",
 	"4,5",
@@ -37,13 +37,13 @@ var Example []string = []string{
 }
 
 func TestRoom_BFS(t *testing.T) {
-	r := day18.Parse(Example, 12)
+	r := day18.Parse(Day18Example, 12)
 	r.Range = 6
 	assert.Equal(t, 22, r.BFS())
 }
 
 func TestRoom_FindLast(t *testing.T) {
-	r := day18.Parse(Example, 12)
+	r := day18.Parse(Day18Example, 12)
 	r.Range = 6
 	assert.Equal(t, "6,1", r.FindLast(12))
 }

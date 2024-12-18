@@ -9,13 +9,15 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{686, 717}, day02.Run("day02"))
-}
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day02.Run("day02")
+	input := []string{
+		"7 6 4 2 1",
+		"1 2 7 8 9",
+		"9 7 6 2 1",
+		"1 3 2 4 5",
+		"8 6 4 4 1",
+		"1 3 6 7 9",
 	}
+	assert.Equal(t, [2]interface{}{2, 4}, day02.Run(input))
 }
 
 func TestValidLine(t *testing.T) {

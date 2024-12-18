@@ -7,13 +7,12 @@ import (
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
+func Run(data []string) [2]interface{} {
 	var total int
 	var scores int
 
 	s := Solver{
-		grid: utils.ConverToGridInts(data),
+		grid: utils.ConverToGridInts(data, ""),
 	}
 	s.height = len(s.grid)
 	s.width = len(s.grid[0])

@@ -8,27 +8,24 @@ import (
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
-func Run(file string) [2]interface{} {
-	data := utils.ReadFile(file)
-
-	left, right := make([]int, 0), make([]int, 0)
+func Run(data []string) [2]interface{} {
+	left, right := make([]int, len(data)), make([]int, len(data))
 	rightCount := make(map[int]int, 0)
 
-	for _, row := range data {
+	for i, row := range data {
+		var err error
 		parts := strings.Split(row, "   ")
 
-		l, err := strconv.Atoi(parts[0])
+		left[i], err = strconv.Atoi(parts[0])
 		if err != nil {
 			panic(err)
 		}
-		r, err := strconv.Atoi(parts[1])
+		right[i], err = strconv.Atoi(parts[1])
 		if err != nil {
 			panic(err)
 		}
-		left = append(left, l)
-		right = append(right, r)
 
-		rightCount[r]++
+		rightCount[right[i]]++
 	}
 
 	sort.Ints(left)
@@ -49,4 +46,3 @@ func Run(file string) [2]interface{} {
 		sim,
 	}
 }
-

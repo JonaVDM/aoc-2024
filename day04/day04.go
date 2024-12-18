@@ -8,9 +8,9 @@ type Solver struct {
 	Data []string
 }
 
-func Run(file string) [2]interface{} {
+func Run(data []string) [2]interface{} {
 	solver := Solver{
-		Data: utils.ReadFile(file),
+		Data: data,
 	}
 
 	return [2]interface{}{

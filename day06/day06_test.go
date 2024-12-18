@@ -9,11 +9,17 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.Equal(t, [2]interface{}{5162, 0}, day06.Run("day06"))
-}
-
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day06.Run("day06")
+	test := []string{
+		"....#.....",
+		".........#",
+		"..........",
+		"..#.......",
+		".......#..",
+		"..........",
+		".#..^.....",
+		"........#.",
+		"#.........",
+		"......#...",
 	}
+	assert.Equal(t, [2]interface{}{41, 0}, day06.Run(test))
 }
