@@ -67,6 +67,7 @@ func (r *Room) BFS() int {
 }
 
 func (r *Room) FindLast(minNum int) string {
+	r.BFS()
 	for {
 		minNum++
 		r.Set(r.Coords[minNum].X, r.Coords[minNum].Y)
