@@ -42,9 +42,8 @@ func TestRoom_BFS(t *testing.T) {
 	assert.Equal(t, 22, r.BFS())
 }
 
-func BenchmarkRun(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		day18.Run("day18")
-	}
+func TestRoom_FindLast(t *testing.T) {
+	r := day18.Parse(Example, 12)
+	r.Range = 6
+	assert.Equal(t, "6,1", r.FindLast(12))
 }
-
