@@ -1,9 +1,10 @@
 package day05
 
 import (
-	"slices"
 	"strconv"
 	"strings"
+
+	"github.com/jonavdm/aoc-2024/utils"
 )
 
 type Solver struct {
@@ -53,7 +54,7 @@ func (s *Solver) CheckPrint(order string) int {
 	seen := make([]string, len(spl))
 
 	for i, item := range spl {
-		if ListContains(seen, s.Orders[item]) {
+		if utils.ListContains(seen, s.Orders[item]) {
 			return 0
 		}
 		seen[i] = item
@@ -63,12 +64,12 @@ func (s *Solver) CheckPrint(order string) int {
 	return num
 }
 
-func ListContains(list []string, items []string) bool {
-	for _, item := range items {
-		if slices.Contains(list, item) {
-			return true
-		}
+// GetValue returns the center value of array `order`
+func GetValue(order []string) int {
+	num, err := strconv.Atoi(order[len(order)/2])
+	if err != nil {
+		panic(err)
 	}
 
-	return false
+	return num
 }

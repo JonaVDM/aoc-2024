@@ -1,5 +1,7 @@
 package utils
 
+import "slices"
+
 func IntRange(start, stop int) []int {
 	out := make([]int, 0)
 	for i := start; i < stop; i++ {
@@ -14,6 +16,16 @@ func Overlap(a, b []int) bool {
 			if x == y {
 				return true
 			}
+		}
+	}
+
+	return false
+}
+
+func ListContains[T comparable](list []T, items []T) bool {
+	for _, item := range items {
+		if slices.Contains(list, item) {
+			return true
 		}
 	}
 

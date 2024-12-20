@@ -23,7 +23,7 @@ func GetAdjacend(x, y, height, width int) []Point {
 }
 
 // GetAdjacend returns the coordinates of all the connected squares.
-// This includes the squares diagonal from it.
+// This does not include the squares diagonal from it.
 func GetDirectAdjacend(x, y, height, width int) []Point {
 	next := make([]Point, 0)
 
@@ -75,4 +75,33 @@ func CopyMap(m map[string]interface{}) map[string]interface{} {
 
 func InRange(x, y, w, h int) bool {
 	return x >= 0 && x < w && y >= 0 && y < h
+}
+
+// Maze is a representation of a 2d map
+type Maze[T any] map[int]map[int]T
+
+func (m Maze[T]) Set(x, y int, t T) {
+	if _, ok := m[x]; !ok {
+		m[x] = make(map[int]T)
+	}
+	m[x][y] = t
+}
+
+func (m Maze[T]) Get(x, y int) T {
+	return m[x][y]
+}
+
+// InitSimpleMaze takes in the input and turns it into a Maze object using a boolean for the wall
+func InitSimpleMaze(data []string, wall rune) Maze[bool] {
+	m := make(Maze[bool])
+
+	for y, row := range data {
+		for x, c := range row {
+			if c == wall {
+				m.Set(x, y, true)
+			}
+		}
+	}
+
+	return m
 }

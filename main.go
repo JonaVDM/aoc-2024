@@ -25,6 +25,7 @@ import (
 	"github.com/jonavdm/aoc-2024/day17"
 	"github.com/jonavdm/aoc-2024/day18"
 	"github.com/jonavdm/aoc-2024/day19"
+	"github.com/jonavdm/aoc-2024/day20"
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
@@ -65,6 +66,7 @@ func main() {
 		{17, day17.Run, "day17"},
 		{18, day18.Run, "day18"},
 		{19, day19.Run, "day19"},
+		{20, day20.Run, "day20"},
 	}
 
 	printHeader(*onlyTime)
@@ -72,7 +74,6 @@ func main() {
 	var totalDuration time.Duration
 
 	for _, runner := range runners {
-		start := time.Now()
 		var out [2]interface{}
 		file := runner.File
 
@@ -85,6 +86,8 @@ func main() {
 		}
 
 		data := utils.ReadFile(file)
+
+		start := time.Now()
 		out = runner.Function(data)
 
 		duration := time.Since(start)
