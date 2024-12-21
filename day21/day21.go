@@ -51,28 +51,51 @@ func PathTo(start rune, end rune) (string, int) {
 	x := s.X - e.X
 	y := s.Y - e.Y
 
-	var xout, yout string
-
-	if x > 0 {
-		xout += "<"
-	} else if x < 0 {
-		xout += ">"
-	}
-	if y > 0 {
-		yout += "^"
-	} else if y < 0 {
-		yout += "v"
-	}
-
+	// The order in which to move first
+	// 1. move left
+	// 2. move up / down
+	// 3. move right
+	// If one makes it so that you come to the corner, skip it for now
 	var out string
 
-	corner := (s.Y == 3 && e.X == 0) || (e.Y == 3 && s.X == 0)
+	// Going left + vertical
+	if x > 0 && !(s.Y == 3 && e.X == 0) {
+		out = "<"
+		if y > 0 {
+			out += "^"
+		} else if y < 0 {
+			out += "v"
+		}
+	}
 
-	// We go left, and the path doesn't go into the corner
-	if x > 0 && !corner {
-		out = xout + yout
-	} else {
-		out = yout + xout
+	// Going up + horizontal
+	if out == "" && y > 0 {
+		out = "^"
+		if x > 0 {
+			out += "<"
+		} else if x < 0 {
+			out += ">"
+		}
+	}
+
+	// Going down + horizontal
+	if out == "" && y < 0 && !(s.X == 0 && e.Y == 3) {
+		out = "v"
+		if x > 0 {
+			out += "<"
+		} else if x < 0 {
+			out += ">"
+		}
+	}
+
+	// Going right + vertical
+	if x < 0 && out == "" {
+		out = ">"
+		if y > 0 {
+			out += "^"
+		} else if y < 0 {
+			out += "v"
+		}
 	}
 
 	return out, utils.AbsInt(x) + utils.AbsInt(y) - len(out)
