@@ -17,7 +17,7 @@ func TestRun(t *testing.T) {
 		"456A",
 		"379A",
 	}
-	assert.Equal(t, [2]interface{}{126384, 0}, day21.Run(file))
+	assert.Equal(t, [2]interface{}{126384, 154115708116294}, day21.Run(file))
 }
 
 func TestPathTo(t *testing.T) {
@@ -51,39 +51,21 @@ func TestPathTo(t *testing.T) {
 	}
 }
 
-// func TestLastBot(t *testing.T) {
-// 	tests := []struct {
-// 		in  string
-// 		out int
-// 	}{
-// 		{"029A", len("<A^A>^^AvvvA")},
-// 	}
-
-// 	for _, tc := range tests {
-// 		t.Run(tc.in, func(t *testing.T) {
-// 			assert.Equal(t, tc.out, len(day21.LastBot(tc.in)))
-// 		})
-// 	}
-// }
-
 func TestMiddleBots(t *testing.T) {
 	test := []struct {
-		seq    []string
+		seq    string
 		amount int
 		out    int
 	}{
-		{[]string{"<A", "^A", ">^A", "vA"}, 2, 65},
-
-		// https://www.reddit.com/r/adventofcode/comments/1hj7f89/2024_day_21_part_1_found_a_rule_to_make_it_work/
-		{[]string{"<^A"}, 1, 9},
-		{[]string{"<^A"}, 2, 21},
-		{[]string{"^<A"}, 1, 9},
-		{[]string{"^<A"}, 2, 25},
+		{"<^A", 1, 9},
+		{"<^A", 2, 21},
+		{"^<A", 1, 9},
+		{"^<A", 2, 25},
 	}
 
 	for _, tc := range test {
 		t.Run(fmt.Sprint(tc.seq), func(t *testing.T) {
-			assert.Equal(t, tc.out, day21.MiddleBots(tc.seq, tc.amount))
+			assert.Equal(t, tc.out, day21.MiddleBots(tc.seq, tc.amount, nil))
 		})
 	}
 }

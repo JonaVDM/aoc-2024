@@ -7,7 +7,10 @@ import (
 )
 
 func Run(data []string) [2]interface{} {
-	var total int
+	var totalA int
+	var totalB int
+
+	cache := make(map[string]map[int]int)
 
 	for _, row := range data {
 		val, err := strconv.Atoi(row[0:3])
@@ -16,14 +19,21 @@ func Run(data []string) [2]interface{} {
 		}
 
 		seq, count := LastBot(row)
-		am := MiddleBots(seq, 2)
+		var total int
+		var b int
 
-		total += val * (am + count)
+		for _, s := range seq {
+			total += MiddleBots(s, 2, cache)
+			b += MiddleBots(s, 25, cache)
+		}
+
+		totalA += val * (total + count)
+		totalB += val * (b + count)
 	}
 
 	return [2]interface{}{
-		total,
-		0,
+		totalA,
+		totalB,
 	}
 }
 
@@ -115,16 +125,19 @@ func LastBot(seq string) ([]string, int) {
 	return out, total
 }
 
-func MiddleBots(seq []string, amount int) int {
+func MiddleBots(seq string, amount int, cache map[string]map[int]int) int {
 	if amount == 0 {
-		total := 0
-
-		for _, s := range seq {
-			total += len(s)
-		}
-
-		return total
+		return len(seq)
 	}
+
+	if _, ok := cache[seq]; ok {
+		if val, ok := cache[seq][amount]; ok {
+			return val
+		}
+	} else if cache != nil {
+		cache[seq] = make(map[int]int)
+	}
+
 	extra := map[string]int{
 		"<^A": 1,
 		"^<A": 1,
@@ -148,17 +161,20 @@ func MiddleBots(seq []string, amount int) int {
 		">vA": {"vA", "<A", "^>A"},
 	}
 
-	total := 0
-	newSeq := make([]string, 0)
+	var total int
 
-	for _, s := range seq {
-		total += extra[s]
-		if pat, ok := pattern[s]; !ok {
-			panic("unkown pattern " + s)
-		} else {
-			newSeq = append(newSeq, pat...)
-		}
+	newSeq, ok := pattern[seq]
+	if !ok {
+		panic("unkown pattern " + seq)
 	}
 
-	return total + MiddleBots(newSeq, amount-1)
+	for _, n := range newSeq {
+		total += MiddleBots(n, amount-1, cache)
+	}
+
+	if cache != nil {
+		cache[seq][amount] = extra[seq] + total
+	}
+
+	return extra[seq] + total
 }
