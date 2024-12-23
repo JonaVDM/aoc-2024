@@ -9,7 +9,7 @@ func Run(data []string) [2]interface{} {
 	for i, d := range data {
 		n, _ := strconv.Atoi(d)
 		score, hist := GetScore(n, 2000)
-		n += score
+		a += score
 		history[i] = hist
 	}
 
