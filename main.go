@@ -29,6 +29,7 @@ import (
 	"github.com/jonavdm/aoc-2024/day21"
 	"github.com/jonavdm/aoc-2024/day22"
 	"github.com/jonavdm/aoc-2024/day23"
+	"github.com/jonavdm/aoc-2024/day24"
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
@@ -73,6 +74,7 @@ func main() {
 		{21, day21.Run, "day21"},
 		{22, day22.Run, "day22"},
 		{23, day23.Run, "day23"},
+		{24, day24.Run, "day24"},
 	}
 
 	printHeader(*onlyTime)
