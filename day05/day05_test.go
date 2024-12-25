@@ -39,5 +39,33 @@ func TestRun(t *testing.T) {
 		"61,13,29",
 		"97,13,75,29,47",
 	}
-	assert.Equal(t, [2]interface{}{143, 0}, day05.Run(test))
+	assert.Equal(t, [2]interface{}{143, 123}, day05.Run(test))
+}
+
+func TestSolver_FixPrint(t *testing.T) {
+	tests := []struct {
+		in  string
+		out string
+	}{
+		{"75,97,47,61,53", "97,75,47,61,53"},
+		{"61,13,29", "61,29,13"},
+		{"97,13,75,29,47", "97,75,47,29,13"},
+	}
+
+	solver := day05.Solver{
+		Orders: map[string][]string{
+			"61": {"13", "53", "29"},
+			"29": {"13"},
+			"53": {"29", "13"},
+			"47": {"53", "13", "61", "29"},
+			"97": {"13", "61", "47", "29", "53", "75"},
+			"75": {"29", "53", "47", "61", "13"},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.in, func(t *testing.T) {
+			assert.Equal(t, tc.out, solver.FixPrint(tc.in))
+		})
+	}
 }

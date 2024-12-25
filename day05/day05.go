@@ -1,6 +1,7 @@
 package day05
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 
@@ -18,6 +19,7 @@ func Run(data []string) [2]interface{} {
 
 	s := false
 	var total int
+	var fixed int
 
 	for _, row := range data {
 		if row == "" {
@@ -30,12 +32,17 @@ func Run(data []string) [2]interface{} {
 			continue
 		}
 
-		total += solver.CheckPrint(row)
+		if score := solver.CheckPrint(row); score != 0 {
+			total += score
+		} else {
+			s := solver.FixPrint(row)
+			fixed += solver.CheckPrint(s)
+		}
 	}
 
 	return [2]interface{}{
 		total,
-		0,
+		fixed,
 	}
 }
 
@@ -64,12 +71,14 @@ func (s *Solver) CheckPrint(order string) int {
 	return num
 }
 
-// GetValue returns the center value of array `order`
-func GetValue(order []string) int {
-	num, err := strconv.Atoi(order[len(order)/2])
-	if err != nil {
-		panic(err)
-	}
+func (s *Solver) FixPrint(order string) string {
+	spl := strings.Split(order, ",")
+	slices.SortFunc(spl, func(a, b string) int {
+		if slices.Contains(s.Orders[a], b) {
+			return -1
+		}
+		return 1
+	})
 
-	return num
+	return strings.Join(spl, ",")
 }
