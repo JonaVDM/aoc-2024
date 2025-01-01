@@ -21,5 +21,5 @@ func TestRun(t *testing.T) {
 		"#.........",
 		"......#...",
 	}
-	assert.Equal(t, [2]interface{}{41, 0}, day06.Run(test))
+	assert.Equal(t, [2]interface{}{41, 6}, day06.Run(test))
 }

@@ -59,17 +59,11 @@ func GetRelativeAdjecend() []Point {
 	}
 }
 
-func CopyMap(m map[string]interface{}) map[string]interface{} {
-	cp := make(map[string]interface{})
+func CopyMap[T comparable, V any](m map[T]V) map[T]V {
+	cp := make(map[T]V)
 	for k, v := range m {
-		vm, ok := v.(map[string]interface{})
-		if ok {
-			cp[k] = CopyMap(vm)
-		} else {
-			cp[k] = v
-		}
+		cp[k] = v
 	}
-
 	return cp
 }
 

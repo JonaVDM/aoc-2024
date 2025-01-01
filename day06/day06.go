@@ -2,6 +2,7 @@ package day06
 
 import (
 	"slices"
+	"sync"
 
 	"github.com/jonavdm/aoc-2024/utils"
 )
@@ -66,36 +67,51 @@ func (s *Solver) FindPath() map[utils.Point]bool {
 	return been
 }
 
+type Counter struct {
+	mu sync.Mutex
+	x  int
+}
+
+func (c *Counter) Add(x int) {
+	c.mu.Lock()
+	c.x += x
+	c.mu.Unlock()
+}
+
 func (s *Solver) FindBlocks(path map[utils.Point]bool) int {
 	keys := utils.GetKeys(path)
 	been := make(map[utils.Point]bool)
-	count := 0
+	var count Counter
+	var wg sync.WaitGroup
 
 	for _, key := range keys {
 		for _, n := range utils.GetDirectAdjacend(key.X, key.Y, s.Height, s.Width) {
 			if _, ok := been[n]; ok || s.Field[n] {
 				continue
 			}
+			been[n] = true
+			wg.Add(1)
 
-			field := s.Field
-			field[n] = true
-			if !s.TryField(field) {
-				been[n] = false
-			} else {
-				been[n] = true
-				count++
-			}
-			field[n] = false
+			go func() {
+				defer wg.Done()
+				field := utils.CopyMap(s.Field)
+				field[n] = true
+				if s.TryField(field) {
+					count.Add(1)
+				}
+			}()
 		}
 	}
 
-	return count
+	wg.Wait()
+
+	return count.x
 }
 
 // TryField returns true if the guard runs in circles
 func (s *Solver) TryField(field map[utils.Point]bool) bool {
 	guard := Guard{
-		Field:  s.Field,
+		Field:  field,
 		Pos:    s.Pos,
 		Height: s.Height,
 		Width:  s.Width,
