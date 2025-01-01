@@ -1,6 +1,8 @@
 package day06
 
-import "github.com/jonavdm/aoc-2024/utils"
+import (
+	"github.com/jonavdm/aoc-2024/utils"
+)
 
 type Guard struct {
 	Field map[utils.Point]bool
@@ -31,7 +33,11 @@ func (s *Guard) Rotate() {
 }
 
 func (s *Guard) Move() bool {
-	if wall := s.Field[utils.Point{X: s.Pos.X + s.Dir.X, Y: s.Pos.Y + s.Dir.Y}]; wall {
+	for {
+		wall := s.Field[utils.Point{X: s.Pos.X + s.Dir.X, Y: s.Pos.Y + s.Dir.Y}]
+		if !wall {
+			break
+		}
 		s.Rotate()
 	}
 

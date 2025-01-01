@@ -1,6 +1,8 @@
 package day06
 
 import (
+	"slices"
+
 	"github.com/jonavdm/aoc-2024/utils"
 )
 
@@ -30,9 +32,11 @@ func Run(data []string) [2]interface{} {
 		}
 	}
 
+	path := solver.FindPath()
+
 	return [2]interface{}{
-		solver.FindCount(),
-		0,
+		len(path),
+		solver.FindBlocks(path),
 	}
 }
 
@@ -43,7 +47,7 @@ type Solver struct {
 	Field  map[utils.Point]bool
 }
 
-func (s *Solver) FindCount() int {
+func (s *Solver) FindPath() map[utils.Point]bool {
 	guard := Guard{
 		Field:  s.Field,
 		Pos:    s.Pos,
@@ -55,12 +59,62 @@ func (s *Solver) FindCount() int {
 	been := make(map[utils.Point]bool)
 	been[s.Pos] = true
 
-	for {
-		if !guard.Move() {
-			break
-		}
+	for guard.Move() {
 		been[guard.Pos] = true
 	}
 
-	return len(been)
+	return been
+}
+
+func (s *Solver) FindBlocks(path map[utils.Point]bool) int {
+	keys := utils.GetKeys(path)
+	been := make(map[utils.Point]bool)
+	count := 0
+
+	for _, key := range keys {
+		for _, n := range utils.GetDirectAdjacend(key.X, key.Y, s.Height, s.Width) {
+			if _, ok := been[n]; ok || s.Field[n] {
+				continue
+			}
+
+			field := s.Field
+			field[n] = true
+			if !s.TryField(field) {
+				been[n] = false
+			} else {
+				been[n] = true
+				count++
+			}
+			field[n] = false
+		}
+	}
+
+	return count
+}
+
+// TryField returns true if the guard runs in circles
+func (s *Solver) TryField(field map[utils.Point]bool) bool {
+	guard := Guard{
+		Field:  s.Field,
+		Pos:    s.Pos,
+		Height: s.Height,
+		Width:  s.Width,
+		Dir:    utils.Point{X: 0, Y: -1},
+	}
+
+	been := make(map[utils.Point][]utils.Point)
+
+	for guard.Move() {
+		if _, ok := been[guard.Pos]; !ok {
+			been[guard.Pos] = make([]utils.Point, 0)
+		}
+
+		if slices.Contains(been[guard.Pos], guard.Dir) {
+			return true
+		}
+
+		been[guard.Pos] = append(been[guard.Pos], guard.Dir)
+	}
+
+	return false
 }
