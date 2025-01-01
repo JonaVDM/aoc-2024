@@ -5,18 +5,8 @@ import (
 )
 
 func Run(data []string) [2]interface{} {
-	s1 := Solver{
-		Dir:    utils.Point{X: 0, Y: -1},
-		Field:  make(map[int]map[int]bool),
-		Been:   make(map[int]map[int]bool),
-		Height: len(data),
-		Width:  len(data[0]),
-		Enable: true,
-	}
-
-	s2 := Solver{
-		Dir:    utils.Point{X: 0, Y: -1},
-		Field:  make(map[int]map[int]bool),
+	solver := Solver{
+		Field:  make(map[utils.Point]bool),
 		Height: len(data),
 		Width:  len(data[0]),
 	}
@@ -28,11 +18,7 @@ func Run(data []string) [2]interface{} {
 			}
 
 			if l == '^' {
-				s1.Pos.X = x
-				s1.Pos.Y = y + 1
-
-				s2.InitialPosition.X = x
-				s2.InitialPosition.Y = y
+				solver.Pos = utils.Point{X: x, Y: y}
 				continue
 			}
 
@@ -40,91 +26,41 @@ func Run(data []string) [2]interface{} {
 				panic("dunno")
 			}
 
-			if _, ok := s1.Field[x]; !ok {
-				s1.Field[x] = make(map[int]bool)
-				s2.Field[x] = make(map[int]bool)
-			}
-			s1.Field[x][y] = true
-			s2.Field[x][y] = true
+			solver.Field[utils.Point{X: x, Y: y}] = true
 		}
 	}
-
-	for {
-		if !s1.Move() {
-			break
-		}
-	}
-
-	// for x := 0; x < s2.Width; x++ {
-	// 	for y := 0; y < s2.Height; y++ {
-	// 		s := s2
-	// 		s.Pos.X, s.Pos.Y = s.InitialPosition.X, s.InitialPosition.Y
-	// 		s.Field = utils.CopyMap(s1.Field)
-	// 		// if !s2.Move() {
-	// 		// 	break
-	// 		// }
-	// 	}
-	// }
 
 	return [2]interface{}{
-		s1.Count,
+		solver.FindCount(),
 		0,
 	}
 }
 
 type Solver struct {
-	InitialPosition utils.Point
-	Pos             utils.Point
-	Dir             utils.Point
-
-	Height, Width int
-
-	Field  map[int]map[int]bool
-	Been   map[int]map[int]bool
-	Count  int
-	Enable bool
+	Pos    utils.Point
+	Height int
+	Width  int
+	Field  map[utils.Point]bool
 }
 
-func (s *Solver) Move() bool {
-	if row, ok := s.Field[s.Pos.X+s.Dir.X]; ok && row[s.Pos.Y+s.Dir.Y] {
-		s.Rotate()
+func (s *Solver) FindCount() int {
+	guard := Guard{
+		Field:  s.Field,
+		Pos:    s.Pos,
+		Height: s.Height,
+		Width:  s.Width,
+		Dir:    utils.Point{X: 0, Y: -1},
 	}
 
-	x := s.Pos.X + s.Dir.X
-	y := s.Pos.Y + s.Dir.Y
+	been := make(map[utils.Point]bool)
+	been[s.Pos] = true
 
-	if x < 0 || x >= s.Width || y < 0 || y >= s.Height {
-		return false
-	}
-
-	if _, ok := s.Been[x]; s.Enable && (!ok || !s.Been[x][y]) {
-		s.Count++
-		if !ok {
-			s.Been[x] = make(map[int]bool)
+	for {
+		if !guard.Move() {
+			break
 		}
-		s.Been[x][y] = true
+		been[guard.Pos] = true
 	}
 
-	s.Pos.X = x
-	s.Pos.Y = y
-
-	return true
-}
-
-func (s *Solver) Rotate() {
-	if s.Dir.Y == -1 {
-		s.Dir.X = 1
-		s.Dir.Y = 0
-	} else if s.Dir.X == 1 {
-		s.Dir.X = 0
-		s.Dir.Y = 1
-	} else if s.Dir.Y == 1 {
-		s.Dir.X = -1
-		s.Dir.Y = 0
-	} else if s.Dir.X == -1 {
-		s.Dir.X = 0
-		s.Dir.Y = -1
-	} else {
-		panic("inpossible direction")
-	}
+	return len(been)
 }
